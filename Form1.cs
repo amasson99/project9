@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -7,91 +7,216 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Calculator
+namespace SimpleCalculator
 {
-    public partial class Form1 : Form
+    public partial class frmCalculator : Form 
     {
-        Double resultValue = 0;
-        String operationPerformed = "";
-        bool isOperationPerformed = false;
-        public Form1()
+        string operand1 = string.Empty;
+        string operand2 = string.Empty;
+        string result;
+        char operation;
+
+        public frmCalculator()
         {
             InitializeComponent();
         }
 
-        private void button_click(object sender, EventArgs e)
+        private void frmCalculator_Load(object sender, EventArgs e)
         {
-            if ((textBox_Result.Text == "0") || (isOperationPerformed))
-                textBox_Result.Clear();
-
-            isOperationPerformed = false;
-            Button button = (Button)sender;
-            if (button.Text == ".")
-            { 
-               if(!textBox_Result.Text.Contains("."))
-                   textBox_Result.Text = textBox_Result.Text + button.Text;
-
-            }else
-            textBox_Result.Text = textBox_Result.Text + button.Text;
-
-
+            btnOne.Click += new EventHandler(btn_Click);
+            btnTwo.Click += new EventHandler(btn_Click);
+            btnThree.Click += new EventHandler(btn_Click);
+            btnFour.Click += new EventHandler(btn_Click);
+            btnFive.Click += new EventHandler(btn_Click);
+            btnSix.Click += new EventHandler(btn_Click);
+            btnSeven.Click += new EventHandler(btn_Click);
+            btnEight.Click += new EventHandler(btn_Click);
+            btnNine.Click += new EventHandler(btn_Click);
+            btnZero.Click += new EventHandler(btn_Click);
+            btnDot.Click += new EventHandler(btn_Click);
         }
 
-        private void operator_click(object sender, EventArgs e)
+        void btn_Click(object sender, EventArgs e)
         {
-            Button button = (Button)sender;
-
-            if (resultValue != 0)
+            try
             {
-                button15.PerformClick();
-                operationPerformed = button.Text;
-                labelCurrentOperation.Text = resultValue + " " + operationPerformed;
-                isOperationPerformed = true;
+                Button btn = sender as Button;
+
+                switch (btn.Name)
+                {
+                    case "btnOne":
+                        txtInput.Text += "1";
+                        break;
+                    case "btnTwo":
+                        txtInput.Text += "2";
+                        break;
+                    case "btnThree":
+                        txtInput.Text += "3";
+                        break;
+                    case "btnFour":
+                        txtInput.Text += "4";
+                        break;
+                    case "btnFive":
+                        txtInput.Text += "5";
+                        break;
+                    case "btnSix":
+                        txtInput.Text += "6";
+                        break;
+                    case "btnSeven":
+                        txtInput.Text += "7";
+                        break;
+                    case "btnEight":
+                        txtInput.Text += "8";
+                        break;
+                    case "btnNine":
+                        txtInput.Text += "9";
+                        break;
+                    case "btnZero":
+                        txtInput.Text += "0";
+                        break;
+                    case "btnDot":
+                        if(!txtInput.Text.Contains("."))
+                            txtInput.Text += ".";
+                        break;
+
+                }
             }
-            else
+            catch(Exception ex)
             {
-
-                operationPerformed = button.Text;
-                resultValue = Double.Parse(textBox_Result.Text);
-                labelCurrentOperation.Text = resultValue + " " + operationPerformed;
-                isOperationPerformed = true;
+                MessageBox.Show("Sorry for the inconvenience, Unexpected error occured. Details: " +
+                    ex.Message);
             }
         }
 
-        private void button4_Click(object sender, EventArgs e)
+        private void txtInput_KeyPress(object sender, KeyPressEventArgs e)
         {
-            textBox_Result.Text = "0";
-        }
-
-        private void button5_Click(object sender, EventArgs e)
-        {
-            textBox_Result.Text = "0";
-            resultValue = 0;
-        }
-
-        private void button15_Click(object sender, EventArgs e)
-        {
-            switch (operationPerformed)
+            switch (e.KeyChar)
             {
-                case "+":
-                    textBox_Result.Text = (resultValue + Double.Parse(textBox_Result.Text)).ToString();
-                    break;
-                case "-":
-                    textBox_Result.Text = (resultValue - Double.Parse(textBox_Result.Text)).ToString();
-                    break;
-                case "*":
-                    textBox_Result.Text = (resultValue * Double.Parse(textBox_Result.Text)).ToString();
-                    break;
-                case "/":
-                    textBox_Result.Text = (resultValue / Double.Parse(textBox_Result.Text)).ToString();
+                case '1':
+                case '2':
+                case '3':
+                case '4':
+                case '5':
+                case '6':
+                case '7':
+                case '8':
+                case '9':
+                case '0':
+                //case '+':
+                //case '-':
+                //case '*':
+                //case '/':
+                //case '.':
                     break;
                 default:
+                    e.Handled = true;
+                    MessageBox.Show("Only numbers, +, -, ., *, / are allowed");
                     break;
             }
-            resultValue = Double.Parse(textBox_Result.Text);
-            labelCurrentOperation.Text = "";
+        }
+
+        private void txtInput_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnPlus_Click(object sender, EventArgs e)
+        {
+            operand1 = txtInput.Text;
+            operation = '+';
+            txtInput.Text = string.Empty;
+        }
+
+        private void btnMinus_Click(object sender, EventArgs e)
+        {
+            operand1 = txtInput.Text;
+            operation = '-';
+            txtInput.Text = string.Empty;
+        }
+
+        private void btnMulitply_Click(object sender, EventArgs e)
+        {
+            operand1 = txtInput.Text;
+            operation = '*';
+            txtInput.Text = string.Empty;
+        }
+
+        private void btnDivide_Click(object sender, EventArgs e)
+        {
+            operand1 = txtInput.Text;
+            operation = '/';
+            txtInput.Text = string.Empty;
+        }
+
+        private void btnEqual_Click(object sender, EventArgs e)
+        {
+            operand2 = txtInput.Text;
+
+            double opr1, opr2;
+            double.TryParse(operand1, out opr1);
+            double.TryParse(operand2, out opr2);
+
+            switch (operation)
+            {
+                case '+':
+                    result = (opr1 + opr2).ToString();
+                    break;
+
+                case '-':
+                    result = (opr1 - opr2).ToString();
+                    break;
+
+                case '*':
+                    result = (opr1 * opr2).ToString();
+                    break;
+
+                case '/':
+                    if (opr2 != 0)
+                    {
+                        result = (opr1 / opr2).ToString();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Can't divide by zero");
+                    }
+                    break;
+            }
+
+            txtInput.Text = result.ToString();
+        }
+
+        private void btnClear_Click(object sender, EventArgs e)
+        {
+            txtInput.Text = string.Empty;
+            operand1 = string.Empty;
+            operand2 = string.Empty;
+        }
+
+        private void btnSqrRoot_Click(object sender, EventArgs e)
+        {
+            double opr1;
+            if (double.TryParse(txtInput.Text, out opr1))
+            {
+                txtInput.Text = (Math.Sqrt(opr1)).ToString();
+            }
+        }
+
+        private void btnByTwo_Click(object sender, EventArgs e)
+        {
+            double opr1;
+            if (double.TryParse(txtInput.Text, out opr1))
+            {
+                txtInput.Text = (opr1 / 2).ToString();
+            }
+        }
+
+        private void btnByFour_Click(object sender, EventArgs e)
+        {
+            double opr1;
+            if (double.TryParse(txtInput.Text, out opr1))
+            {
+                txtInput.Text = (opr1 / 4).ToString();
+            }
         }
     }
 }
-//How to Create a Calculator in Visual Studio C#
-//
