@@ -169,9 +169,9 @@ public class Fraction {
      * @return A string of the fraction
      */
     public string toString() {
-        string bob = Integer.toString(numerator);
+        string bob = numerator.ToString();
         bob += "/";
-        bob += Integer.toString(denominator);
+        bob += denominator.ToString();
         return bob;
     }
 
@@ -183,7 +183,7 @@ public class Fraction {
      * (list all parameters, one per line)
      * @return a true or false stating whether the fractions equal eachother
      */
-    public boolean equals(Fraction f) {
+    public bool equals(Fraction f) {
         return (numerator == f.numerator) && (denominator == f.denominator);
     }
 
